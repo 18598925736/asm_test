@@ -1,0 +1,39 @@
+apply plugin: 'maven-publish'
+apply plugin: 'groovy'
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+
+    implementation 'com.android.tools.build:gradle:4.2.2'
+
+    implementation 'org.ow2.asm:asm:9.1'
+    implementation 'org.ow2.asm:asm-commons:9.1'
+
+}
+
+
+afterEvaluate {
+    publishing {
+        repositories {
+            maven {
+                url = uri('../asm_lifecycle_repo')
+            }
+        }
+        //    配置maven-publishing插件的输出物
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+                groupId = 'com.zhou'  // 配置你的插件的 Group ID
+                artifactId = 'asm_lifecycle'  // 配置你的插件的 Artifact ID
+                version = '1.0.0'  // 配置你的插件的版本号
+            }
+        }
+
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
